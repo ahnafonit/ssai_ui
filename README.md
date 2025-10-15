@@ -1,4 +1,65 @@
-# React + Vite
+# RLHF CRM UI
+
+A comprehensive CRM interface built with React and Vite, featuring AI-powered dashboards, call analysis, and agent management.
+
+## Prerequisites
+
+- Node.js (v16 or higher)
+- npm (v7 or higher)
+
+## Getting Started
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/ahnafonit/ssai_ui.git
+cd ssai_ui
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+### Running the Application
+
+To start the development server:
+
+```bash
+npm run dev
+```
+
+The application will be available at `http://localhost:5173/`
+
+### Available Scripts
+
+- `npm run dev` - Start the development server
+- `npm run build` - Build the application for production
+- `npm run preview` - Preview the production build locally
+- `npm run lint` - Run ESLint to check code quality
+
+## Features
+
+- **AI Dashboard** - Comprehensive AI analytics and insights
+- **Manager Dashboard** - Team management and performance tracking
+- **Director Dashboard** - High-level overview and strategic insights
+- **Call Analysis** - AI-powered call analysis and transcription
+- **Agent Management** - AI agent configuration and monitoring
+- **Profile Settings** - User profile and preferences management
+- **Microservices Integration** - Seamless integration with backend services
+
+## Technology Stack
+
+- **React 19** - Frontend framework
+- **Vite** - Build tool and development server
+- **Tailwind CSS** - Utility-first CSS framework
+- **Lucide React** - Icon library
+- **Recharts** - Charting library for data visualization
+
+---
+
+## React + Vite Template Information
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
