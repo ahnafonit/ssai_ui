@@ -6,6 +6,7 @@ import RLHFCRMInterface from './RLHFCRMInterface'
 import Microservices from './Microservices'
 import DirectorDashboard from './DirectorDashboard'
 import ManagerDashboard from './ManagerDashboard'
+import TeamLeadDashboard from './TeamLeadDashboard'
 import LoginDashboard from './LoginDashboard'
 import CallAnalysis from './CallAnalysis'
 import './index.css'
@@ -67,6 +68,10 @@ function App() {
 
   if (activeView === 'manager') {
     return <ManagerDashboard onViewChange={handleViewChange} onLogout={handleLogout} darkMode={darkMode} onToggleDarkMode={toggleDarkMode} />
+  }
+
+  if (activeView === 'teamlead') {
+    return <TeamLeadDashboard onViewChange={handleViewChange} onLogout={handleLogout} darkMode={darkMode} onToggleDarkMode={toggleDarkMode} />
   }
 
   if (activeView === 'callanalysis') {
