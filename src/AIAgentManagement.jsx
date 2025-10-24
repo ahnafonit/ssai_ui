@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, Sparkles, User, Settings, BarChart3, TrendingUp, Clock as ClockIcon, Calendar, Target, Volume2, Mic, PhoneCall, PhoneOff, Edit, Save, X, Plus, Trash2, Award, Brain, Zap, Users, MessageCircle, CheckCircle, XCircle, PlayCircle, PauseCircle, RefreshCw, Download, Upload, Eye, AlertCircle, Activity, Headphones, FileText, ChevronRight, LogOut, Cpu, HardDrive, Server, LineChart, Sun, Moon, PhoneForwarded } from 'lucide-react';
+import { Phone, Sparkles, User, Settings, BarChart3, TrendingUp, Clock as ClockIcon, Calendar, Target, Volume2, Mic, PhoneCall, PhoneOff, Edit, Save, X, Plus, Trash2, Award, Brain, Zap, Users, MessageCircle, CheckCircle, XCircle, PlayCircle, PauseCircle, RefreshCw, Download, Upload, Eye, AlertCircle, Activity, Headphones, FileText, ChevronRight, LogOut, Cpu, HardDrive, Server, LineChart, Sun, Moon, PhoneForwarded, Shield } from 'lucide-react';
 import ProfileSettings from './ProfileSettings';
 import Clock from './Clock';
 
@@ -183,6 +183,13 @@ const AIAgentManagement = ({ onLogout, onViewChange, darkMode, onToggleDarkMode 
                         >
                             <Users size={18} className="flex-shrink-0" />
                             <span>Manager</span>
+                        </button>
+                        <button
+                            onClick={() => onViewChange('teamlead')}
+                            className="w-full flex items-center justify-start space-x-3 border border-yellow-600 text-yellow-400 px-4 py-2.5 rounded-lg hover:bg-yellow-600 hover:text-white transition-colors text-sm font-medium"
+                        >
+                            <Shield size={18} className="flex-shrink-0" />
+                            <span>Team Lead Hub</span>
                         </button>
                         <button
                             onClick={() => onViewChange('callanalysis')}
