@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Users, TrendingUp, Target, DollarSign, BarChart3, Globe, Phone, Award, Building2, ChevronDown, ChevronRight, Mail, Clock as ClockIcon } from 'lucide-react';
+import { Users, TrendingUp, Target, DollarSign, BarChart3, Globe, Phone, Award, Building2, ChevronDown, ChevronRight, Mail, Clock as ClockIcon, ArrowLeft } from 'lucide-react';
 import Clock from './Clock';
 
-export default function DirectorDashboard() {
+export default function DirectorDashboard({ onViewChange }) {
     const [expandedOrgs, setExpandedOrgs] = useState([1]); // Default first org expanded
     const [viewingManager, setViewingManager] = useState(null);
 
@@ -134,6 +134,13 @@ export default function DirectorDashboard() {
             <div className="flex justify-between items-start mb-8">
                 <div>
                     <div className="flex items-center gap-3 mb-2">
+                        <button
+                            onClick={() => onViewChange && onViewChange('agent')}
+                            className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-lg transition-colors"
+                        >
+                            <ArrowLeft className="w-4 h-4" />
+                            <span className="text-sm font-medium">Back to Agent</span>
+                        </button>
                         <div className="bg-gradient-to-br from-purple-500 to-blue-600 p-2 rounded-lg">
                             <Globe className="w-6 h-6" />
                         </div>
