@@ -3,9 +3,13 @@ import { Users, TrendingUp, Target, DollarSign, Phone, Award, ChevronDown, Chevr
 import Clock from './Clock';
 
 export default function TeamLeadDashboard({ onViewChange }) {
-    const [activeView, setActiveView] = useState('team'); // Default to 'team' view to show managers and reps
-    const [expandedManagers, setExpandedManagers] = useState([1]); // Expand first manager by default
+    const [activeView, setActiveView] = useState('agent'); // 'agent' or 'team'
+    const [expandedManagers, setExpandedManagers] = useState([1]);
+    const [agentStatus, setAgentStatus] = useState('active');
     const [showAccountDropdown, setShowAccountDropdown] = useState(false);
+    const [dialedNumber, setDialedNumber] = useState('');
+    const [callForwardingNumber, setCallForwardingNumber] = useState('');
+    const [forwardingEnabled, setForwardingEnabled] = useState(false);
 
     const toggleManager = (managerId) => {
         setExpandedManagers(prev =>
@@ -15,11 +19,44 @@ export default function TeamLeadDashboard({ onViewChange }) {
         );
     };
 
+    const toggleAgentStatus = () => {
+        setAgentStatus(prev => prev === 'active' ? 'paused' : 'active');
+    };
+
     const teamLead = {
         name: "Michael Rodriguez",
         email: "michael.r@company.com",
         department: "Sales Operations",
         avatar: "MR",
+        agent: {
+            name: "Michael AI Assistant",
+            voice: "Professional Male",
+            personality: "Strategic & Analytical",
+            performance: {
+                today: { calls: 10, conversions: 7, successRate: 70, avgDuration: "6:15", gpuUsage: "48%" },
+                thisWeek: { calls: 54, conversions: 38, successRate: 70, gpuUsage: "50%" },
+                thisMonth: { calls: 234, conversions: 164, successRate: 70, gpuUsage: "49%" },
+                allTime: { calls: 987, conversions: 691, successRate: 70, gpuUsage: "49%" }
+            },
+            recentCalls: [
+                { id: 1, contact: 'David Wilson', company: 'Global Tech', time: '9:30 AM', duration: '7:12', result: 'Converted', revenue: '$15,000' },
+                { id: 2, contact: 'Emma Davis', company: 'Cloud Systems', time: '11:00 AM', duration: '5:45', result: 'Converted', revenue: '$12,500' },
+                { id: 3, contact: 'James Taylor', company: 'Data Corp', time: '2:15 PM', duration: '6:30', result: 'Follow-up', revenue: '$0' },
+                { id: 4, contact: 'Sarah Miller', company: 'AI Solutions', time: '3:45 PM', duration: '5:20', result: 'Converted', revenue: '$18,200' }
+            ],
+            settings: {
+                voiceSpeed: 1.0,
+                enthusiasm: 8,
+                formality: 9,
+                workingHours: '8 AM - 7 PM',
+                recordCalls: true
+            },
+            scripts: [
+                { id: 1, name: 'Executive Engagement', active: true, lastUpdated: '2024-10-05' },
+                { id: 2, name: 'Strategic Partnership', active: true, lastUpdated: '2024-10-01' },
+                { id: 3, name: 'Enterprise Solutions', active: false, lastUpdated: '2024-09-28' }
+            ]
+        },
         managers: [
             {
                 id: 1,
@@ -82,18 +119,177 @@ export default function TeamLeadDashboard({ onViewChange }) {
         avgSuccessRate: Math.round(teamLead.managers.reduce((sum, mgr) => sum + mgr.stats.successRate, 0) / teamLead.managers.length)
     };
 
+    // Agent View (Team Lead's Personal AI) - Similar to Manager Dashboard
+    if (activeView === 'agent') {
+        return (
+            <div className="min-h-screen bg-gray-900">
+                <div className="bg-gray-800 shadow-lg border-b border-gray-700">
+                    <div className="max-w-7xl mx-auto px-6 py-4">
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-4">
+                                <button
+                                    onClick={() => onViewChange && onViewChange('agent')}
+                                    className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 border border-gray-600 rounded-lg transition-colors"
+                                >
+                                    <ArrowLeft className="w-4 h-4" />
+                                    <span className="text-sm font-medium">Back to Agent</span>
+                                </button>
+                                <div className="bg-yellow-600 rounded-lg p-2">
+                                    <Phone className="text-white" size={24} />
+                                </div>
+                                <div>
+                                    <h1 className="text-2xl font-bold text-white">Team Lead Hub</h1>
+                                    <p className="text-gray-400 text-sm">AI-Powered Sales Leadership</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center space-x-4">
+                                <Clock />
+                                <button
+                                    onClick={() => setActiveView('team')}
+                                    className="flex items-center space-x-2 border border-blue-600 text-blue-400 px-4 py-2 rounded-lg hover:bg-blue-600 hover:text-white transition-colors"
+                                >
+                                    <Users size={16} />
+                                    <span>View My Team</span>
+                                </button>
+                                <div className="relative">
+                                    <button
+                                        onClick={() => setShowAccountDropdown(!showAccountDropdown)}
+                                        className="flex items-center space-x-3 hover:bg-gray-700 rounded-lg p-2 transition-colors"
+                                    >
+                                        <div className="text-right">
+                                            <p className="text-sm font-medium text-gray-200">{teamLead.name}</p>
+                                            <p className="text-xs text-gray-400">{teamLead.email}</p>
+                                        </div>
+                                        <div className="bg-yellow-600 rounded-full w-10 h-10 flex items-center justify-center text-white font-semibold">
+                                            {teamLead.avatar}
+                                        </div>
+                                    </button>
+                                    {showAccountDropdown && (
+                                        <div className="absolute right-0 mt-2 w-56 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-50">
+                                            <div className="p-3 border-b border-gray-700">
+                                                <p className="text-sm font-medium text-gray-200">{teamLead.name}</p>
+                                                <p className="text-xs text-gray-400">{teamLead.email}</p>
+                                                <p className="text-xs text-gray-500 mt-1">{teamLead.department}</p>
+                                            </div>
+                                            <div className="p-2">
+                                                <button className="w-full flex items-center space-x-2 px-3 py-2 text-gray-300 hover:bg-gray-700 rounded-lg transition-colors">
+                                                    <User size={16} />
+                                                    <span className="text-sm">Profile Settings</span>
+                                                </button>
+                                                <button
+                                                    onClick={() => setShowAccountDropdown(false)}
+                                                    className="w-full flex items-center space-x-2 px-3 py-2 text-red-400 hover:bg-red-900/20 rounded-lg transition-colors"
+                                                >
+                                                    <LogOut size={16} />
+                                                    <span className="text-sm">Logout</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="max-w-7xl mx-auto px-6 py-6">
+                    <div className="bg-gradient-to-r from-yellow-600 to-orange-700 rounded-xl p-8 mb-6 text-white shadow-lg">
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-4">
+                                <div className="bg-white rounded-full p-4">
+                                    <Brain className="text-yellow-600" size={32} />
+                                </div>
+                                <div>
+                                    <h2 className="text-2xl font-bold mb-1">{teamLead.agent.name}</h2>
+                                    <p className="text-yellow-100">Your Personal AI Calling Agent</p>
+                                    <div className="flex items-center space-x-4 mt-2">
+                                        <div className="flex items-center space-x-2">
+                                            <Volume2 size={14} />
+                                            <span className="text-sm">{teamLead.agent.voice}</span>
+                                        </div>
+                                        <div className="flex items-center space-x-2">
+                                            <MessageCircle size={14} />
+                                            <span className="text-sm">{teamLead.agent.personality}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="text-right">
+                                <div className="flex items-center space-x-3 mb-3">
+                                    <span className={`px-4 py-2 rounded-full font-medium ${agentStatus === 'active' ? 'bg-green-500 text-white' : 'bg-gray-500 text-white'}`}>
+                                        {agentStatus === 'active' ? '🟢 Active' : '⏸️ Paused'}
+                                    </span>
+                                </div>
+                                <button
+                                    onClick={toggleAgentStatus}
+                                    className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-semibold transition-all ${agentStatus === 'active' ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white'}`}
+                                >
+                                    {agentStatus === 'active' ? <><PauseCircle size={20} /><span>Pause Agent</span></> : <><PlayCircle size={20} /><span>Start Agent</span></>}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-5 gap-4 mb-6">
+                        <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                            <div className="flex items-center justify-between mb-2">
+                                <PhoneCall className="text-blue-400" size={24} />
+                                <span className="text-2xl font-bold text-gray-100">{teamLead.agent.performance.today.calls}</span>
+                            </div>
+                            <p className="text-sm text-gray-400">Calls Today</p>
+                        </div>
+                        <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                            <div className="flex items-center justify-between mb-2">
+                                <CheckCircle className="text-green-400" size={24} />
+                                <span className="text-2xl font-bold text-gray-100">{teamLead.agent.performance.today.conversions}</span>
+                            </div>
+                            <p className="text-sm text-gray-400">Conversions</p>
+                        </div>
+                        <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                            <div className="flex items-center justify-between mb-2">
+                                <Target className="text-purple-400" size={24} />
+                                <span className="text-2xl font-bold text-gray-100">{teamLead.agent.performance.today.successRate}%</span>
+                            </div>
+                            <p className="text-sm text-gray-400">Success Rate</p>
+                        </div>
+                        <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                            <div className="flex items-center justify-between mb-2">
+                                <ClockIcon className="text-yellow-400" size={24} />
+                                <span className="text-2xl font-bold text-gray-100">{teamLead.agent.performance.today.avgDuration}</span>
+                            </div>
+                            <p className="text-sm text-gray-400">Avg Duration</p>
+                        </div>
+                        <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                            <div className="flex items-center justify-between mb-2">
+                                <Cpu className="text-orange-400" size={24} />
+                                <span className="text-2xl font-bold text-gray-100">{teamLead.agent.performance.today.gpuUsage}</span>
+                            </div>
+                            <p className="text-sm text-gray-400">GPU Usage</p>
+                        </div>
+                    </div>
+
+                    <div className="text-center py-12 text-gray-400">
+                        <Brain className="w-16 h-16 mx-auto mb-4 text-gray-600" />
+                        <p className="text-lg">Agent Hub view for Team Lead</p>
+                        <p className="text-sm mt-2">Click "View My Team" to see managers and their sales reps</p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // Team View - Shows managers and their sales reps
     return (
         <div className="min-h-screen bg-slate-900 text-white p-6">
-            {/* Header */}
             <div className="flex justify-between items-start mb-8">
                 <div>
                     <div className="flex items-center gap-3 mb-2">
                         <button
-                            onClick={() => onViewChange && onViewChange('agent')}
+                            onClick={() => setActiveView('agent')}
                             className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-lg transition-colors"
                         >
-                            <ArrowLeft className="w-4 h-4" />
-                            <span className="text-sm font-medium">Back to Agent</span>
+                            <Brain className="w-4 h-4" />
+                            <span className="text-sm font-medium">My AI Agent</span>
                         </button>
                         <div className="bg-gradient-to-br from-yellow-500 to-orange-600 p-2 rounded-lg">
                             <Users className="w-6 h-6" />
@@ -120,7 +316,6 @@ export default function TeamLeadDashboard({ onViewChange }) {
                                 {teamLead.avatar}
                             </div>
                         </button>
-
                         {showAccountDropdown && (
                             <div className="absolute right-0 mt-2 w-56 bg-slate-800 border border-slate-700 rounded-lg shadow-lg z-50">
                                 <div className="p-3 border-b border-slate-700">
@@ -134,9 +329,7 @@ export default function TeamLeadDashboard({ onViewChange }) {
                                         <span className="text-sm">Profile Settings</span>
                                     </button>
                                     <button
-                                        onClick={() => {
-                                            setShowAccountDropdown(false);
-                                        }}
+                                        onClick={() => setShowAccountDropdown(false)}
                                         className="w-full flex items-center space-x-2 px-3 py-2 text-red-400 hover:bg-red-900/20 rounded-lg transition-colors"
                                     >
                                         <LogOut size={16} />
@@ -149,7 +342,6 @@ export default function TeamLeadDashboard({ onViewChange }) {
                 </div>
             </div>
 
-            {/* Team KPIs */}
             <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-8">
                 <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
                     <div className="flex items-center justify-between mb-2">
@@ -195,12 +387,10 @@ export default function TeamLeadDashboard({ onViewChange }) {
                 </div>
             </div>
 
-            {/* Managers with their Sales Reps */}
             <div className="space-y-4">
                 <h2 className="text-2xl font-bold mb-4">My Team - Managers & Sales Representatives</h2>
                 {teamLead.managers.map((manager) => (
                     <div key={manager.id} className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
-                        {/* Manager Card */}
                         <div
                             className="p-6 cursor-pointer hover:bg-slate-750 transition-colors"
                             onClick={() => toggleManager(manager.id)}
@@ -274,7 +464,6 @@ export default function TeamLeadDashboard({ onViewChange }) {
                             </div>
                         </div>
 
-                        {/* Sales Reps Section (Expandable) */}
                         {expandedManagers.includes(manager.id) && (
                             <div className="bg-slate-850 border-t border-slate-700 p-6">
                                 <h4 className="text-lg font-bold mb-4 flex items-center gap-2">
@@ -332,56 +521,6 @@ export default function TeamLeadDashboard({ onViewChange }) {
                         )}
                     </div>
                 ))}
-            </div>
-
-            {/* Team Rankings */}
-            <div className="grid grid-cols-2 gap-6 mt-8">
-                <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-                    <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                        <Award className="w-5 h-5 text-yellow-400" />
-                        Top Performing Managers
-                    </h2>
-                    <div className="space-y-3">
-                        {[...teamLead.managers].sort((a, b) => b.quota.percentage - a.quota.percentage).map((manager, idx) => (
-                            <div key={manager.id} className="flex items-center justify-between bg-slate-750 p-4 rounded-lg">
-                                <div className="flex items-center gap-3">
-                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${idx === 0 ? 'bg-yellow-500 text-slate-900' : idx === 1 ? 'bg-slate-400 text-slate-900' : 'bg-orange-600 text-white'}`}>
-                                        {idx + 1}
-                                    </div>
-                                    <div>
-                                        <p className="font-semibold">{manager.name}</p>
-                                        <p className="text-xs text-slate-400">{manager.salesReps.length} reps • {manager.stats.revenue} revenue</p>
-                                    </div>
-                                </div>
-                                <div className="text-right">
-                                    <p className="text-xl font-bold text-green-400">{manager.quota.percentage}%</p>
-                                    <p className="text-xs text-slate-400">quota</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-                    <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                        <BarChart3 className="w-5 h-5 text-blue-400" />
-                        Team Insights
-                    </h2>
-                    <div className="space-y-4">
-                        <div className="bg-green-900/20 border border-green-700 p-4 rounded-lg">
-                            <p className="text-sm font-medium text-green-300 mb-1">Overall Performance</p>
-                            <p className="text-xs text-green-100">All managers exceeding quota targets this month</p>
-                        </div>
-                        <div className="bg-blue-900/20 border border-blue-700 p-4 rounded-lg">
-                            <p className="text-sm font-medium text-blue-300 mb-1">Today's Activity</p>
-                            <p className="text-xs text-blue-100">{teamStats.totalCalls} calls made across {teamStats.totalReps} sales reps</p>
-                        </div>
-                        <div className="bg-purple-900/20 border border-purple-700 p-4 rounded-lg">
-                            <p className="text-sm font-medium text-purple-300 mb-1">Revenue Performance</p>
-                            <p className="text-xs text-purple-100">${(teamStats.totalRevenue / 1000).toFixed(1)}K generated today across all teams</p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     );
