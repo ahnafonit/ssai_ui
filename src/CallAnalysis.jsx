@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Phone, Clock, TrendingUp, TrendingDown, Users, PhoneCall, PhoneIncoming, PhoneMissed, PhoneForwarded, Voicemail } from 'lucide-react';
+import { Phone, Clock, TrendingUp, TrendingDown, Users, PhoneCall, PhoneIncoming, PhoneMissed, PhoneForwarded, Voicemail, ArrowLeft } from 'lucide-react';
 
-const CallAnalysis = () => {
+const CallAnalysis = ({ onViewChange }) => {
     const [timeRange, setTimeRange] = useState('week');
     const [activeTab, setActiveTab] = useState('overview');
     const [currentTime, setCurrentTime] = useState(new Date());
@@ -158,9 +158,18 @@ const CallAnalysis = () => {
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="mb-8 flex justify-between items-center">
-                    <div>
-                        <h1 className="text-3xl font-bold text-white">Call Analytics</h1>
-                        <p className="text-gray-400 mt-2">Comprehensive call center metrics and insights</p>
+                    <div className="flex items-center gap-4">
+                        <button
+                            onClick={() => onViewChange && onViewChange('agent')}
+                            className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 border border-gray-600 rounded-lg transition-colors"
+                        >
+                            <ArrowLeft className="w-4 h-4" />
+                            <span className="text-sm font-medium">Back to Agent</span>
+                        </button>
+                        <div>
+                            <h1 className="text-3xl font-bold text-white">Call Analytics</h1>
+                            <p className="text-gray-400 mt-2">Comprehensive call center metrics and insights</p>
+                        </div>
                     </div>
                     <div className="text-right">
                         <div className="text-2xl font-mono font-bold text-white">
