@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Users, TrendingUp, Target, DollarSign, Phone, Award, ChevronDown, ChevronRight, Clock as ClockIcon, Activity, BarChart3, Brain, Volume2, MessageCircle, PhoneCall, CheckCircle, PlayCircle, PauseCircle, Edit, Plus, FileText, Calendar, Cpu, User, LogOut } from 'lucide-react';
+import { Users, TrendingUp, Target, DollarSign, Phone, Award, ChevronDown, ChevronRight, Clock as ClockIcon, Activity, BarChart3, Brain, Volume2, MessageCircle, PhoneCall, CheckCircle, PlayCircle, PauseCircle, Edit, Plus, FileText, Calendar, Cpu, User, LogOut, ArrowLeft } from 'lucide-react';
 import ProfileSettings from './ProfileSettings';
 import Clock from './Clock';
 
-export default function ManagerDashboard() {
+export default function ManagerDashboard({ onViewChange }) {
     const [activeView, setActiveView] = useState('agent'); // 'agent' or 'team'
     const [expandedReps, setExpandedReps] = useState([1]);
     const [agentStatus, setAgentStatus] = useState('active');
@@ -143,6 +143,13 @@ export default function ManagerDashboard() {
                     <div className="max-w-7xl mx-auto px-6 py-4">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-4">
+                                <button
+                                    onClick={() => onViewChange && onViewChange('agent')}
+                                    className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 border border-gray-600 rounded-lg transition-colors"
+                                >
+                                    <ArrowLeft className="w-4 h-4" />
+                                    <span className="text-sm font-medium">Back to Agent</span>
+                                </button>
                                 <div className="bg-purple-600 rounded-lg p-2">
                                     <Phone className="text-white" size={24} />
                                 </div>
@@ -609,6 +616,13 @@ export default function ManagerDashboard() {
             <div className="flex justify-between items-start mb-8">
                 <div>
                     <div className="flex items-center gap-3 mb-2">
+                        <button
+                            onClick={() => onViewChange && onViewChange('agent')}
+                            className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-lg transition-colors"
+                        >
+                            <ArrowLeft className="w-4 h-4" />
+                            <span className="text-sm font-medium">Back to Agent</span>
+                        </button>
                         <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-2 rounded-lg">
                             <Users className="w-6 h-6" />
                         </div>
